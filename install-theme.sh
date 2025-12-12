@@ -36,11 +36,10 @@ echo "Setting permissions and ownership..."
 sudo chmod -R 775 "$TARGET_DIR"
 sudo chown -R www-data:www-data "$TARGET_DIR"
 
-# 4) Run npm build in plugin directory
-echo "Building plugin assets..."
-cd "$TARGET_DIR"
+# 4) Install npm dependencies and build from AtoM root
+echo "Installing npm dependencies..."
+cd "$ATOM_PATH"
 sudo -u www-data npm install
-sudo -u www-data npm run build
 
 # 5) Clear cache and restart PHP-FPM
 echo "Clearing AtoM cache and restarting PHP-FPM..."
