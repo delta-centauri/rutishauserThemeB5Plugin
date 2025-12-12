@@ -1,0 +1,138 @@
+/*
+
+Customize variables:
+
+- Check the ../../arDominionB5Plugin/scss/variables.scss file.
+- Check the B5 documentation (https://getbootstrap.com/docs/5.0/customize/sass/).
+- Import B5 functions, variables and mixins if needed.
+
+*/
+
+@import "../../arDominionB5Plugin/scss/main.scss";
+
+// GLightbox styles from plugin's own node_modules
+@import "../../rutishauserThemeB5Plugin/node_modules/glightbox/dist/css/glightbox.min.css";
+
+/*
+
+Extend:
+
+- Add extra SCSS and CSS imports.
+- Add custom styles directly.
+
+*/
+// Full width overrides for Roger theme
+// Remove max-width constraints from Bootstrap container classes and wrapper
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl,
+.container-fluid {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+#wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+// Ensure header and footer containers use full width
+#top-bar > .container-fluid,
+.bg-secondary > .container-fluid,
+footer > .container-fluid {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  max-width: 100%;
+}
+
+// Adjust main-column spacing for better readability on wide screens
+@media (min-width: 1400px) {
+  #main-column {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+// Optional: Add max-width to content area for better readability
+// Uncomment if you want to limit the text width for better reading experience
+// #content {
+//   max-width: 1600px;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+
+// GLightbox custom styles for Roger Theme
+.gslide-description {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 1rem;
+}
+
+.glightbox-clean .gclose,
+.glightbox-clean .gnext,
+.glightbox-clean .gprev {
+  background-color: rgba(0, 0, 0, 0.6);
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+// Ensure images in .ooo class open in lightbox
+.ooo {
+  a.glightbox {
+    cursor: zoom-in;
+    display: inline-block;
+    
+    &:hover {
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+    }
+  }
+}
+
+// Sibling Navigation Styles
+#sibling-navigation {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $spacer;
+  background-color: $white;
+  
+  .btn {
+    white-space: nowrap;
+    
+    &:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+  }
+  
+  .text-muted {
+    font-size: 0.875rem;
+  }
+}
+
+// Keyboard navigation hint
+@media (min-width: 768px) {
+  #sibling-navigation::after {
+    content: "Keyboard: ← → or P/N";
+    display: block;
+    font-size: 0.75rem;
+    color: $gray-600;
+    text-align: center;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid $gray-200;
+  }
+}
+// Uncomment if you want to limit the text width for better reading experience
+// #content {
+//   max-width: 1600px;
+//   margin-left: auto;
+//   margin-right: auto;
+// }

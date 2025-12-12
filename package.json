@@ -1,0 +1,14 @@
+{
+  "name": "rutishauserthemeb5plugin",
+  "version": "0.0.3",
+  "description": "Full-width theme for AtoM with GLightbox integration and sibling navigation",
+  "private": true,
+  "dependencies": {
+    "glightbox": "^3.3.0"
+  },
+  "scripts": {
+    "install": "echo 'GLightbox installed for rutishauserThemeB5Plugin'"
+  },
+  "author": "Roger",
+  "license": "AGPL-3.0"
+}
