@@ -1,8 +1,13 @@
 // Import GLightbox
 import GLightbox from 'glightbox';
 
+// Test alert on page load
+alert('Lightbox.js wurde geladen! Version: 1.0');
+
 // Initialize GLightbox for digital object images with sibling navigation
 document.addEventListener('DOMContentLoaded', () => {
+  alert('DOMContentLoaded - Lightbox wird initialisiert');
+
   const lightbox = GLightbox({
     selector: '.glightbox',
     touchNavigation: true,
@@ -17,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add custom sibling navigation when lightbox opens or slides change
     onOpen: () => {
+      alert('Lightbox wurde geöffnet!');
       setTimeout(() => addSiblingNavigation(lightbox), 150);
     },
 
@@ -28,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Check if we should auto-open lightbox (from sibling navigation)
   if (sessionStorage.getItem('openLightbox') === 'true') {
     sessionStorage.removeItem('openLightbox');
+    alert('Auto-opening lightbox from navigation');
     // Wait a bit for page to fully load
     setTimeout(() => {
       const lightboxLink = document.querySelector('a.glightbox');
@@ -39,15 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to add sibling navigation to lightbox
   function addSiblingNavigation(lightboxInstance) {
+    alert('addSiblingNavigation wurde aufgerufen');
+
     const activeSlide = document.querySelector('.gslide.current');
     if (!activeSlide) {
-      console.log('No active slide found');
+      alert('FEHLER: Kein active slide gefunden');
       return;
     }
 
     const slideInner = activeSlide.querySelector('.gslide-inner-content');
     if (!slideInner) {
-      console.log('No slide inner found');
+      alert('FEHLER: Kein slide inner gefunden');
       return;
     }
 
@@ -62,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalLink = document.querySelector('a.glightbox');
 
     if (!originalLink) {
-      console.log('No glightbox link found on page');
+      alert('FEHLER: Kein glightbox link gefunden');
       return;
     }
 
@@ -73,14 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const siblingIndex = originalLink.dataset.siblingIndex;
     const siblingTotal = originalLink.dataset.siblingTotal;
 
-    console.log('Sibling data:', {
-      prevUrl,
-      nextUrl,
-      siblingIndex,
-      siblingTotal,
-      prevTitle,
-      nextTitle
-    });
+    alert(`Daten gefunden:\nPrev: ${prevUrl}\nNext: ${nextUrl}\nIndex: ${siblingIndex}\nTotal: ${siblingTotal}`);
 
     // Add navigation arrows for siblings (left and right of image)
     if (prevUrl || nextUrl) {
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         prevBtn.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Previous clicked, navigating to:', prevUrl);
+          alert('PREVIOUS geklickt! Navigiere zu: ' + prevUrl);
           sessionStorage.setItem('openLightbox', 'true');
           window.location.href = prevUrl;
         };
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Next clicked, navigating to:', nextUrl);
+          alert('NEXT geklickt! Navigiere zu: ' + nextUrl);
           sessionStorage.setItem('openLightbox', 'true');
           window.location.href = nextUrl;
         };
@@ -118,7 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       slideInner.appendChild(navContainer);
-      console.log('Navigation arrows added');
+      alert('Navigation Pfeile wurden hinzugefügt!');
+    } else {
+      alert('Keine Prev/Next URLs vorhanden');
     }
 
     // Add sibling counter at bottom center
@@ -127,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
       counterContainer.className = 'gslide-sibling-counter';
       counterContainer.innerHTML = `<span>Bild ${siblingIndex} von ${siblingTotal}</span>`;
       slideInner.appendChild(counterContainer);
-      console.log('Counter added:', `Bild ${siblingIndex} von ${siblingTotal}`);
+      alert(`Counter hinzugefügt: Bild ${siblingIndex} von ${siblingTotal}`);
     } else {
-      console.log('No counter data:', { siblingIndex, siblingTotal });
+      alert('Keine Counter-Daten vorhanden');
     }
   }
 });
