@@ -88,10 +88,7 @@ footer > .container-fluid {
     cursor: zoom-in;
     display: inline-block;
 
-    &:hover {
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
-    }
+    // No hover effect - removed opacity change
   }
 }
 
@@ -165,6 +162,20 @@ footer > .container-fluid {
   span {
     display: inline-block;
   }
+
+  .separator {
+    margin: 0 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  a {
+    color: white;
+    text-decoration: underline;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
 }
 
 // Sibling Navigation Styles
@@ -189,19 +200,7 @@ footer > .container-fluid {
   }
 }
 
-// Keyboard navigation hint
-@media (min-width: 768px) {
-  #sibling-navigation::after {
-    content: "Keyboard: ← → or P/N";
-    display: block;
-    font-size: 0.75rem;
-    color: $gray-600;
-    text-align: center;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid $gray-200;
-  }
-}
+// Keyboard navigation hint removed - only arrow keys work
 // Uncomment if you want to limit the text width for better reading experience
 // #content {
 //   max-width: 1600px;

@@ -110,11 +110,25 @@ document.addEventListener('DOMContentLoaded', () => {
       slideInner.appendChild(navContainer);
     }
 
-    // Add sibling counter at bottom center
+    // Add sibling counter at bottom center with link to open in new tab
     if (siblingIndex && siblingTotal) {
       const counterContainer = document.createElement('div');
       counterContainer.className = 'gslide-sibling-counter';
-      counterContainer.innerHTML = `<span>Bild ${siblingIndex} von ${siblingTotal}</span>`;
+
+      // Get the current image URL from the lightbox
+      const currentSlide = activeSlide.querySelector('.gslide-image img');
+      const imageUrl = currentSlide ? currentSlide.src : '';
+
+      // Determine language for link text (check HTML lang attribute or default to German)
+      const lang = document.documentElement.lang || 'de';
+      const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
+
+      counterContainer.innerHTML = `
+        <span>Bild ${siblingIndex} von ${siblingTotal}</span>
+        <span class="separator">|</span>
+        <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>
+      `;
+
       slideInner.appendChild(counterContainer);
     }
   }
