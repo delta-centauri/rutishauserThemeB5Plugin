@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="<?php echo date('Y-m-d\TH:i:s\Z'); ?>" product-name="rutishauserThemeB5Plugin">
+    <header/>
+    <body>
+
+      <!-- Plugin-specific translations (not in default AtoM) -->
+
+      <!-- Sibling Navigation - NEW feature added by this plugin -->
+      <trans-unit id="1">
+        <source>Navigate siblings</source>
+        <target>Geschwister-Navigation</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>
