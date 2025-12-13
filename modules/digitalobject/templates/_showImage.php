@@ -6,15 +6,21 @@ $siblings = [];
 $currentIndex = -1;
 $prevSibling = null;
 $nextSibling = null;
+$infoObject = null;
 
-if (isset($resource) && $resource->parentId != QubitInformationObject::ROOT_ID) {
+// $resource is the QubitDigitalObject, get the related InformationObject
+if (isset($resource) && $resource instanceof QubitDigitalObject) {
+    $infoObject = $resource->object;
+}
+
+if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
     $criteria = new Criteria();
-    $criteria->add(QubitInformationObject::PARENT_ID, $resource->parentId);
+    $criteria->add(QubitInformationObject::PARENT_ID, $infoObject->parentId);
     $criteria->addAscendingOrderByColumn(QubitInformationObject::LFT);
     $siblings = QubitInformationObject::get($criteria);
 
     foreach ($siblings as $index => $sibling) {
-        if ($sibling->id == $resource->id) {
+        if ($sibling->id == $infoObject->id) {
             $currentIndex = $index;
             if ($index > 0) {
                 $prevSibling = $siblings[$index - 1];
@@ -35,7 +41,7 @@ if (isset($resource) && $resource->parentId != QubitInformationObject::ROOT_ID) 
       $linkAttrs = [
         'class' => 'glightbox',
         'data-gallery' => 'digital-object-gallery',
-        'data-description' => esc_entities($resource->getTitle(['cultureFallback' => true]))
+        'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
       ];
 
       // Add sibling navigation data
