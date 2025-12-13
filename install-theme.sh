@@ -44,7 +44,7 @@ sudo cp -r "$SOURCE_DIR" "$TARGET_DIR"
 
 # Set permissions and ownership
 echo "Setting permissions and ownership..."
-sudo chmod -R 775 "$TARGET_DIR"
+sudo chmod -R 755 "$TARGET_DIR"
 sudo chown -R www-data:www-data "$TARGET_DIR"
 
 # Install npm dependencies for the plugin
