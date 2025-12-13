@@ -8,8 +8,14 @@ set -e  # Exit on error
 echo "=== AtoM Theme Installation Script ==="
 echo ""
 
-# 1) Prompt for AtoM installation path
-read -p "Enter AtoM installation path (e.g. /usr/share/nginx/atom): " ATOM_PATH
+# 1) Prompt for AtoM installation path with default
+read -p "Enter AtoM installation path [default: /usr/share/nginx/atompast] (e.g. /usr/share/nginx/atom): " ATOM_PATH
+
+# Use default if empty
+if [ -z "$ATOM_PATH" ]; then
+    ATOM_PATH="/usr/share/nginx/atompast"
+    echo "Using default path: $ATOM_PATH"
+fi
 
 # Validate path exists
 if [ ! -d "$ATOM_PATH" ]; then
