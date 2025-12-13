@@ -31,7 +31,7 @@ A full-width theme for Artefactual AtoM (Access to Memory) based on `arDominionB
   - The detail page of the archival description behind the lightbox is automatically loaded, so when closing the lightbox, the current page is displayed
 
 ### Internationalization (i18n)
-- German and English translations for all plugin-specific texts
+- German, English, Spanish, French, and Ukrainian translations for all plugin-specific texts
 
 
 ## Installation
@@ -122,49 +122,6 @@ sudo -u www-data php symfony cc
 # Firefox: Ctrl + F5
 ```
 
-## Development
-
-### Project Structure
-
-```
-rutishauserThemeB5Plugin/
-├── config/
-│   └── rutishauserThemeB5PluginConfiguration.class.php  # Plugin configuration
-├── i18n/
-│   ├── de/
-│   │   └── messages.xml                                 # German translations
-│   └── en/
-│       └── messages.xml                                 # English translations
-├── images/
-│   └── image.png                                        # Theme preview image
-├── js/
-│   ├── lightbox.js                                      # GLightbox initialization with sibling navigation
-│   └── main.js                                          # JavaScript entry point
-├── modules/
-│   ├── digitalobject/
-│   │   └── templates/
-│   │       ├── _show.php                                # Digital object display override
-│   │       └── _showImage.php                           # Image display with GLightbox
-│   └── informationobject/
-│       └── templates/
-│           └── _siblingNavigation.php                   # Sibling navigation component
-├── scss/
-│   └── main.scss                                        # Main stylesheet with full-width overrides
-├── templates/
-│   ├── layout.php                                       # Standard layout
-│   ├── layout_1col.php                                  # 1-column layout
-│   ├── layout_2col.php                                  # 2-column layout (with sidebar)
-│   ├── layout_3col.php                                  # 3-column layout (sidebar + context menu)
-│   ├── _header.php                                      # Header partial
-│   └── _layout_start_webpack.php                        # HTML head & body start
-├── .gitignore
-├── install-theme.sh                                     # Installation script
-├── package.json                                         # Plugin dependencies (GLightbox)
-├── README.md
-└── webpack.entry.js                                     # Webpack entry point
-```
-
-
 ## Troubleshooting
 
 ### Theme not loading
@@ -199,6 +156,59 @@ cd /usr/share/nginx/atom
 sudo rm -rf node_modules package-lock.json
 sudo -u www-data npm install
 sudo -u www-data npm run build
+```
+
+
+## Development
+
+### Project Structure
+
+```
+rutishauserThemeB5Plugin/
+├── config/
+│   └── rutishauserThemeB5PluginConfiguration.class.php  # Plugin configuration
+├── i18n/
+│   ├── de/
+│   │   └── messages.xml                                 # German translations
+│   ├── en/
+│   │   └── messages.xml                                 # English translations
+│   ├── es/
+│   │   └── messages.xml                                 # Spanish translations
+│   ├── fr/
+│   │   └── messages.xml                                 # French translations
+│   └── uk/
+│       └── messages.xml                                 # Ukrainian translations
+├── images/
+│   └── image.png                                        # Theme preview image
+├── js/
+│   ├── lightbox.js                                      # GLightbox initialization with sibling navigation
+│   └── main.js                                          # JavaScript entry point
+├── modules/
+│   ├── digitalobject/
+│   │   └── templates/
+│   │       ├── _show.php                                # Digital object display override
+│   │       └── _showImage.php                           # Image display with GLightbox
+│   └── informationobject/
+│       └── templates/
+│           └── _siblingNavigation.php                   # Sibling navigation component
+├── scss/
+│   └── main.scss                                        # Main stylesheet with full-width overrides
+├── templates/
+│   ├── layout.php                                       # Default layout
+│   ├── layout_1col.php                                  # 1-column layout
+│   ├── layout_2col.php                                  # 2-column layout (with sidebar)
+│   ├── layout_3col.php                                  # 3-column layout (sidebar + context menu)
+│   ├── _header.php                                      # Header partial
+│   └── _layout_start_webpack.php                        # HTML head & body start
+├── .gitignore
+├── install-theme.sh                                     # Installation script
+├── package.json                                         # Plugin dependencies (GLightbox)
+├── README.md                                            # Main documentation (English)
+├── README-DE.md                                         # German documentation
+├── README-ES.md                                         # Spanish documentation
+├── README-FR.md                                         # French documentation
+├── README-UK.md                                         # Ukrainian documentation
+└── webpack.entry.js                                     # Webpack entry point
 ```
 
 

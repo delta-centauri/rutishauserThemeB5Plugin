@@ -122,6 +122,60 @@ sudo -u www-data php symfony cc
 # Firefox : Ctrl + F5
 ```
 
+
+## Développement
+
+### Structure du Projet
+
+```
+rutishauserThemeB5Plugin/
+├── config/
+│   └── rutishauserThemeB5PluginConfiguration.class.php  # Configuration du plugin
+├── i18n/
+│   ├── de/
+│   │   └── messages.xml                                 # Traductions en allemand
+│   ├── en/
+│   │   └── messages.xml                                 # Traductions en anglais
+│   ├── es/
+│   │   └── messages.xml                                 # Traductions en espagnol
+│   ├── fr/
+│   │   └── messages.xml                                 # Traductions en français
+│   └── uk/
+│       └── messages.xml                                 # Traductions en ukrainien
+├── images/
+│   └── image.png                                        # Image d'aperçu du thème
+├── js/
+│   ├── lightbox.js                                      # Initialisation de GLightbox avec navigation entre frères
+│   └── main.js                                          # Point d'entrée JavaScript
+├── modules/
+│   ├── digitalobject/
+│   │   └── templates/
+│   │       ├── _show.php                                # Override d'affichage de l'objet numérique
+│   │       └── _showImage.php                           # Affichage de l'image avec GLightbox
+│   └── informationobject/
+│       └── templates/
+│           └── _siblingNavigation.php                   # Composant de navigation entre frères
+├── scss/
+│   └── main.scss                                        # Feuille de style principale avec overrides pleine largeur
+├── templates/
+│   ├── layout.php                                       # Mise en page par défaut
+│   ├── layout_1col.php                                  # Mise en page 1 colonne
+│   ├── layout_2col.php                                  # Mise en page 2 colonnes (avec barre latérale)
+│   ├── layout_3col.php                                  # Mise en page 3 columnas (barre latérale + menu contextuel)
+│   ├── _header.php                                      # Partiel d'en-tête
+│   └── _layout_start_webpack.php                        # Début HTML head & body
+├── .gitignore
+├── install-theme.sh                                     # Script d'installation
+├── package.json                                         # Dépendances du plugin (GLightbox)
+├── README.md                                            # Documentation principale (anglais)
+├── README-DE.md                                         # Documentation en allemand
+├── README-ES.md                                         # Documentation en espagnol
+├── README-FR.md                                         # Documentation en français
+├── README-UK.md                                         # Documentation en ukrainien
+└── webpack.entry.js                                     # Point d'entrée Webpack
+```
+
+
 ## Licence
 
 AGPL-3.0

@@ -31,7 +31,7 @@ Ein Full-Width Theme für Artefactual AtoM (Access to Memory) basierend auf `arD
   - Die Detailseite der Verzeichnungseinheit hinter der Lightbox wird automatisch geladen, sodass beim schliessen der Lightbox die aktuelle Seite angezeigt wird.
 
 ### Mehrsprachigkeit (i18n)
-- Deutsche und englische Übersetzungen für alle Plugin-spezifischen Texte
+- Übersetzungen in Deutsch, Englisch, Spanisch, Französisch und Ukrainisch für alle Plugin-spezifischen Texte
 
 
 ## Installation
@@ -133,8 +133,14 @@ rutishauserThemeB5Plugin/
 ├── i18n/
 │   ├── de/
 │   │   └── messages.xml                                 # Deutsche Übersetzungen
-│   └── en/
-│       └── messages.xml                                 # Englische Übersetzungen
+│   ├── en/
+│   │   └── messages.xml                                 # Englische Übersetzungen
+│   ├── es/
+│   │   └── messages.xml                                 # Spanische Übersetzungen
+│   ├── fr/
+│   │   └── messages.xml                                 # Französische Übersetzungen
+│   └── uk/
+│       └── messages.xml                                 # Ukrainische Übersetzungen
 ├── images/
 │   └── image.png                                        # Theme-Vorschaubild
 ├── js/
@@ -160,7 +166,11 @@ rutishauserThemeB5Plugin/
 ├── .gitignore
 ├── install-theme.sh                                     # Installationsskript
 ├── package.json                                         # Plugin Dependencies (GLightbox)
-├── README.md
+├── README.md                                            # Hauptdokumentation (Englisch)
+├── README-DE.md                                         # Deutsche Dokumentation
+├── README-ES.md                                         # Spanische Dokumentation
+├── README-FR.md                                         # Französische Dokumentation
+├── README-UK.md                                         # Ukrainische Dokumentation
 └── webpack.entry.js                                     # Webpack Entry Point
 ```
 
