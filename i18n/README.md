@@ -4,14 +4,29 @@ Dieses Verzeichnis enthält die Übersetzungsdateien für das rutishauserThemeB5
 
 ## Verfügbare Sprachen / Available Languages
 
-- **de.xml** - Deutsch (German)
+- **de/** - Deutsch (German)
+- **en/** - English
+
+## Verzeichnisstruktur / Directory Structure
+
+```
+i18n/
+├── de/
+│   └── messages.xml
+├── en/
+│   └── messages.xml
+└── README.md
+```
+
+Jede Sprache hat ihr eigenes Unterverzeichnis mit einer `messages.xml` Datei.
 
 ## Neue Übersetzungen hinzufügen / Adding New Translations
 
-1. Kopieren Sie `de.xml` und benennen Sie sie nach dem ISO-Code (z.B. `fr.xml` für Französisch)
-2. Ändern Sie im `<file>`-Tag: `target-language="de"` zu Ihrer Sprache (z.B. `target-language="fr"`)
-3. Übersetzen Sie die `<target>`-Elemente in Ihre Sprache
-4. Leeren Sie den Cache: `php symfony cc`
+1. Erstellen Sie ein neues Verzeichnis mit dem ISO-Sprachcode (z.B. `fr/` für Französisch)
+2. Kopieren Sie `de/messages.xml` in das neue Verzeichnis
+3. Ändern Sie im `<file>`-Tag: `target-language="de"` zu Ihrer Sprache (z.B. `target-language="fr"`)
+4. Übersetzen Sie die `<target>`-Elemente in Ihre Sprache
+5. Leeren Sie den Cache: `php symfony cc`
 
 ## Nach Änderungen / After Changes
 
