@@ -49,17 +49,18 @@ Le plugin inclut un script d'installation qui copie automatiquement les fichiers
 # Rendre le script exécutable
 chmod +x install-theme.sh
 
-# Exécuter l'installation (par défaut : /usr/share/nginx/atom)
+# Exécuter l'installation
 ./install-theme.sh
-
-# Ou avec un chemin personnalisé
-./install-theme.sh /chemin/vers/votre/installation/atom
 ```
+
+Le script demandera le chemin d'installation d'AtoM (par défaut : `/usr/share/nginx/atom`) avec autocomplétion par tabulation.
 
 Le script :
 1. Copie tous les fichiers du plugin vers `plugins/rutishauserThemeB5Plugin/`
 2. Définit les permissions correctes pour l'utilisateur du serveur web (www-data)
 3. Installe les dépendances du plugin (npm install)
+4. Compile les assets avec webpack
+5. Vide le cache Symfony
 
 ### Installation Manuelle
 
