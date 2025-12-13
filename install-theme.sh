@@ -10,8 +10,10 @@ set -e  # Exit on error
 echo "=== AtoM Theme Installation Script ==="
 echo ""
 
-# Prompt for AtoM installation path with default
-read -p "Enter AtoM installation path [default: /usr/share/nginx/$ATOM_DIR_NAME]: " ATOM_PATH
+# Prompt for AtoM installation path with default (with tab completion)
+echo "Enter AtoM installation path [default: /usr/share/nginx/$ATOM_DIR_NAME]"
+echo "(Tab completion enabled - press Tab to autocomplete path)"
+read -e -p "Path: " ATOM_PATH
 
 # Use default if empty
 if [ -z "$ATOM_PATH" ]; then
