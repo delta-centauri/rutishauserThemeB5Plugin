@@ -1,193 +1,195 @@
 # rutishauserThemeB5Plugin
 
-Ein Full-Width Theme für Artefactual AtoM (Access to Memory) basierend auf `arDominionB5Plugin` mit verbesserter Navigation und Ansicht speziell für Verzeichnungseinheiten mit Bildern.
+**[🇩🇪 Deutsch](README-DE.md) | [🇪🇸 Español](README-ES.md) | [🇫🇷 Français](README-FR.md) | [🇺🇦 Українська](README-UK.md)**
+
+A full-width theme for Artefactual AtoM (Access to Memory) based on `arDominionB5Plugin` with enhanced navigation and viewing capabilities specifically for archival descriptions with images.
 
 ## Features
 
 ### Full Width Layout
-- Alle Container nutzen 100% Breite für maximale Nutzung des verfügbaren Platzes
-- `container-xxl` → `container-fluid` in allen Layout-Dateien
-- `container-xl` → `container-fluid` im Header (Site Description Bar)
-- SCSS Overrides setzen alle `.container*` Klassen auf `max-width: 100%`
-- Header und Wrapper Anpassungen für konsistente horizontale Abstände
-- Optimale Padding für verschiedene Bildschirmgrößen
+- All containers utilize 100% width for maximum use of available space
+- `container-xxl` → `container-fluid` in all layout files
+- `container-xl` → `container-fluid` in header (Site Description Bar)
+- SCSS overrides set all `.container*` classes to `max-width: 100%`
+- Header and wrapper adjustments for consistent horizontal spacing
+- Optimal padding for various screen sizes
 
 ### GLightbox Image Viewer
-- Bilder in der Klasse `.ooo` öffnen in einer modernen Lightbox statt in neuem Tab
-- Zoom-Funktionalität (Mausrad)
-- Bild verschieben durch Ziehen mit der Maus (Pan/Drag)
-- Tastatur-Navigation (Pfeiltasten, ESC zum Schließen)
-- Touch-Support für Tablets/Smartphones (Wischen, Pinch-to-Zoom)
-- Responsive und barrierefrei
+- Images in the `.ooo` class open in a modern lightbox instead of a new tab
+- Zoom functionality (mouse wheel)
+- Pan/drag images with mouse
+- Keyboard navigation (arrow keys, ESC to close)
+- Touch support for tablets/smartphones (swipe, pinch-to-zoom)
+- Responsive and accessible
 
-### Geschwister-Navigation (Sibling Navigation)
-- Vor/Zurück-Buttons unterhalb der Bildanzeige zum Durchklicken von Geschwister-Beschreibungen
-- Zeigt aktuelle Position innerhalb der Elter-Verzeichnungseinheit (z.B. "2 von 5")
-- Navigation direkt in der Lightbox:
-  - Pfeile links und rechts vom Bild für Vor/Zurück
-  - Bildnummer und Link zum Öffnen in separatem Tab direkt in der Bildbeschreibung
-  - Die Detailseite der Verzeichnungseinheit hinter der Lightbox wird automatisch geladen, sodass beim schliessen der Lightbox die aktuelle Seite angezeigt wird.
+### Sibling Navigation
+- Previous/Next buttons below the image display for navigating through sibling descriptions
+- Shows current position within parent archival unit (e.g., "2 of 5")
+- Navigation directly in the lightbox:
+  - Arrows left and right of the image for Previous/Next
+  - Image number and link to open in separate tab directly in the image description
+  - The detail page of the archival description behind the lightbox is automatically loaded, so when closing the lightbox, the current page is displayed
 
-### Mehrsprachigkeit (i18n)
-- Deutsche und englische Übersetzungen für alle Plugin-spezifischen Texte
+### Internationalization (i18n)
+- German and English translations for all plugin-specific texts
 
 
 ## Installation
 
-### Voraussetzungen
-- Artefactual AtoM (Version 2.7; Bootsgtrap 5 ready)
-- `arDominionB5Plugin` als Basis-Theme
-- Node.js und npm für den Build-Prozess
+### Prerequisites
+- Artefactual AtoM (Version 2.7; Bootstrap 5 ready)
+- `arDominionB5Plugin` as base theme
+- Node.js and npm for the build process
 
-### Schnellinstallation mit install-theme.sh
+### Quick Installation with install-theme.sh
 
-Das Plugin enthält ein Installationsskript, das die Dateien automatisch an den richtigen Ort kopiert:
+The plugin includes an installation script that automatically copies files to the correct location:
 
 ```bash
-# Script ausführbar machen
+# Make script executable
 chmod +x install-theme.sh
 
-# Installation durchführen (Standard: /usr/share/nginx/atom)
+# Run installation (default: /usr/share/nginx/atom)
 ./install-theme.sh
 
-# Oder mit benutzerdefiniertem Pfad
-./install-theme.sh /pfad/zu/deiner/atom/installation
+# Or with custom path
+./install-theme.sh /path/to/your/atom/installation
 ```
 
-Das Skript:
-1. Kopiert alle Plugin-Dateien nach `plugins/rutishauserThemeB5Plugin/`
-2. Setzt korrekte Berechtigungen für den Webserver-Benutzer (www-data)
-3. Installiert Plugin-Dependencies (npm install)
+The script:
+1. Copies all plugin files to `plugins/rutishauserThemeB5Plugin/`
+2. Sets correct permissions for the web server user (www-data)
+3. Installs plugin dependencies (npm install)
 
-### Manuelle Installation
+### Manual Installation
 
-Wenn du das Plugin manuell installieren möchtest:
+If you prefer to install the plugin manually:
 
 ```bash
-# 1. Plugin nach AtoM kopieren
+# 1. Copy plugin to AtoM
 cp -r rutishauserThemeB5Plugin /usr/share/nginx/atom/plugins/
 
-# 2. Berechtigungen setzen
+# 2. Set permissions
 cd /usr/share/nginx/atom/plugins/rutishauserThemeB5Plugin
 sudo chown -R www-data:www-data .
 
-# 3. Plugin-Dependencies installieren
+# 3. Install plugin dependencies
 sudo -u www-data npm install
 ```
 
-### Build durchführen
+### Building Assets
 
-Nach der Installation müssen die Assets gebaut werden:
+After installation, assets must be built:
 
 ```bash
-# Zum AtoM Root-Verzeichnis wechseln
+# Navigate to AtoM root directory
 cd /usr/share/nginx/atom
 
-# Root Dependencies installieren (falls noch nicht geschehen)
+# Install root dependencies (if not done yet)
 sudo -u www-data npm install
 
-# Produktions-Build
+# Production build
 sudo -u www-data npm run build
 
-# Oder für Entwicklung mit Watch
+# Or for development with watch
 sudo -u www-data npm run dev
 ```
 
-### Theme aktivieren
+### Activate Theme
 
-#### Option 1: Via AtoM Backend (empfohlen)
-1. Als Administrator einloggen
-2. Admin → Einstellungen → Benutzeroberfläche
-3. Theme auswählen: "rutishauserThemeB5Plugin"
-4. Speichern
+#### Option 1: Via AtoM Backend (recommended)
+1. Log in as administrator
+2. Admin → Settings → User Interface
+3. Select theme: "rutishauserThemeB5Plugin"
+4. Save
 
-#### Option 2: Via Datenbank (nicht getestet)
+#### Option 2: Via Database (not tested)
 ```sql
 UPDATE setting
 SET value = 'rutishauserThemeB5Plugin'
 WHERE name = 'plugins';
 ```
 
-### Cache leeren
+### Clear Cache
 
 ```bash
-# Symfony Cache leeren
+# Clear Symfony cache
 sudo -u www-data php symfony cc
 
-# Browser Cache leeren
-# Chrome/Edge: Strg + Shift + R
-# Firefox: Strg + F5
+# Clear browser cache
+# Chrome/Edge: Ctrl + Shift + R
+# Firefox: Ctrl + F5
 ```
 
-## Entwicklung
+## Development
 
-### Projektstruktur
+### Project Structure
 
 ```
 rutishauserThemeB5Plugin/
 ├── config/
-│   └── rutishauserThemeB5PluginConfiguration.class.php  # Plugin-Konfiguration
+│   └── rutishauserThemeB5PluginConfiguration.class.php  # Plugin configuration
 ├── i18n/
 │   ├── de/
-│   │   └── messages.xml                                 # Deutsche Übersetzungen
+│   │   └── messages.xml                                 # German translations
 │   └── en/
-│       └── messages.xml                                 # Englische Übersetzungen
+│       └── messages.xml                                 # English translations
 ├── images/
-│   └── image.png                                        # Theme-Vorschaubild
+│   └── image.png                                        # Theme preview image
 ├── js/
-│   ├── lightbox.js                                      # GLightbox Initialisierung mit Sibling Navigation
-│   └── main.js                                          # JavaScript Entry Point
+│   ├── lightbox.js                                      # GLightbox initialization with sibling navigation
+│   └── main.js                                          # JavaScript entry point
 ├── modules/
 │   ├── digitalobject/
 │   │   └── templates/
-│   │       ├── _show.php                                # Digital Object Display Override
-│   │       └── _showImage.php                           # Image Display mit GLightbox
+│   │       ├── _show.php                                # Digital object display override
+│   │       └── _showImage.php                           # Image display with GLightbox
 │   └── informationobject/
 │       └── templates/
-│           └── _siblingNavigation.php                   # Sibling Navigation Component
+│           └── _siblingNavigation.php                   # Sibling navigation component
 ├── scss/
-│   └── main.scss                                        # Haupt-Stylesheet mit Full-Width Overrides
+│   └── main.scss                                        # Main stylesheet with full-width overrides
 ├── templates/
-│   ├── layout.php                                       # Standard-Layout
-│   ├── layout_1col.php                                  # 1-Spalten Layout
-│   ├── layout_2col.php                                  # 2-Spalten Layout (mit Sidebar)
-│   ├── layout_3col.php                                  # 3-Spalten Layout (Sidebar + Context Menu)
-│   ├── _header.php                                      # Header Partial
-│   └── _layout_start_webpack.php                        # HTML Head & Body Start
+│   ├── layout.php                                       # Standard layout
+│   ├── layout_1col.php                                  # 1-column layout
+│   ├── layout_2col.php                                  # 2-column layout (with sidebar)
+│   ├── layout_3col.php                                  # 3-column layout (sidebar + context menu)
+│   ├── _header.php                                      # Header partial
+│   └── _layout_start_webpack.php                        # HTML head & body start
 ├── .gitignore
-├── install-theme.sh                                     # Installationsskript
-├── package.json                                         # Plugin Dependencies (GLightbox)
+├── install-theme.sh                                     # Installation script
+├── package.json                                         # Plugin dependencies (GLightbox)
 ├── README.md
-└── webpack.entry.js                                     # Webpack Entry Point
+└── webpack.entry.js                                     # Webpack entry point
 ```
 
 
 ## Troubleshooting
 
-### Theme wird nicht geladen
-1. Plugin-Reihenfolge prüfen in `config/ProjectConfiguration.class.php`
-2. Sicherstellen, dass Webpack-Build erfolgreich war
-3. Cache leeren (Symfony + Browser)
+### Theme not loading
+1. Check plugin order in `config/ProjectConfiguration.class.php`
+2. Ensure webpack build was successful
+3. Clear cache (Symfony + browser)
 
-### Styles werden nicht angewendet
-1. `sudo -u www-data npm run build` erneut ausführen
-2. Prüfen ob `web/` Verzeichnis die neuen Bundle-Dateien enthält
-3. Browser-Cache mit `Strg + Shift + R` leeren
+### Styles not applied
+1. Re-run `sudo -u www-data npm run build`
+2. Check if `web/` directory contains new bundle files
+3. Clear browser cache with `Ctrl + Shift + R`
 
-### GLightbox funktioniert nicht
-1. Prüfen ob GLightbox installiert wurde: `ls node_modules/glightbox`
-2. Falls nicht: `sudo -u www-data npm install` im Plugin-Verzeichnis
-3. Build neu durchführen
-4. Browser-Konsole auf JavaScript-Fehler prüfen
+### GLightbox not working
+1. Check if GLightbox is installed: `ls node_modules/glightbox`
+2. If not: `sudo -u www-data npm install` in plugin directory
+3. Rebuild
+4. Check browser console for JavaScript errors
 
-### Sibling Navigation zeigt undefined
-1. Prüfen ob `_showImage.php` die data-Attribute korrekt setzt
-2. Browser-Konsole auf Fehler prüfen
-3. Sicherstellen dass PHP-Template überschrieben wird (File Precedence)
+### Sibling navigation shows undefined
+1. Check if `_showImage.php` sets data attributes correctly
+2. Check browser console for errors
+3. Ensure PHP template is being overridden (file precedence)
 
-### Fehler beim Build
+### Build errors
 ```bash
-# Node Modules neu installieren
+# Reinstall node modules
 cd /usr/share/nginx/atom/plugins/rutishauserThemeB5Plugin
 sudo rm -rf node_modules package-lock.json
 sudo -u www-data npm install
@@ -199,15 +201,15 @@ sudo -u www-data npm run build
 ```
 
 
-## Lizenz
+## License
 
 AGPL-3.0
 
 ## Credits
 
-- Basiert auf [arDominionB5Plugin](https://github.com/artefactual/atom/tree/qa/2.x/plugins/arDominionB5Plugin)
-- Nutzt [GLightbox](https://github.com/biati-digital/glightbox) für die Lightbox-Funktionalität
-- Entwickelt von Roger Rutishauser (roger.rutishauser@gmail.com) mit Hilfe von claude.ai
+- Based on [arDominionB5Plugin](https://github.com/artefactual/atom/tree/qa/2.x/plugins/arDominionB5Plugin)
+- Uses [GLightbox](https://github.com/biati-digital/glightbox) for lightbox functionality
+- Developed by Roger Rutishauser (roger.rutishauser@gmail.com) with assistance from claude.ai
 
 ## Version
 
@@ -216,17 +218,17 @@ AGPL-3.0
 ## Changelog
 
 ### Version 0.0.3 (2025-12-13)
-- Sibling Navigation in Lightbox optimiert
-- Duplicate Prevention für Navigation-Elemente
-- Bildnummer und Tab-Link direkt in Bildbeschreibung
-- i18n Übersetzungen für alle Texte
-- Keyboard-Navigation-Hint entfernt
-- Hover-Effekt auf Bildern entfernt
+- Optimized sibling navigation in lightbox
+- Duplicate prevention for navigation elements
+- Image number and tab link directly in image description
+- i18n translations for all texts
+- Removed keyboard navigation hint
+- Removed hover effect on images
 
 ### Version 0.0.2
-- GLightbox Integration
-- Sibling Navigation unterhalb der Bildanzeige
-- Full-Width Layout für alle Container
+- GLightbox integration
+- Sibling navigation below image display
+- Full-width layout for all containers
 
 ### Version 0.0.1
-- Initiale Version mit Full-Width Layout
+- Initial version with full-width layout
