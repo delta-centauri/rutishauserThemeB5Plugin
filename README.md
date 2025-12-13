@@ -1,6 +1,6 @@
 # rutishauserThemeB5Plugin
 
-Ein benutzerdefiniertes Full-Width Theme für Artefactual AtoM (Access to Memory) basierend auf `arDominionB5Plugin`.
+Ein Full-Width Theme für Artefactual AtoM (Access to Memory) basierend auf `arDominionB5Plugin` mit verbesserter Navigation und Ansicht speziell für Verzeichnungseinheiten mit Bildern.
 
 ## Features
 
@@ -14,30 +14,28 @@ Ein benutzerdefiniertes Full-Width Theme für Artefactual AtoM (Access to Memory
 
 ### GLightbox Image Viewer
 - Bilder in der Klasse `.ooo` öffnen in einer modernen Lightbox statt in neuem Tab
-- Zoom und Pan Funktionalität
+- Zoom-Funktionalität (Mausrad)
+- Bild verschieben durch Ziehen mit der Maus (Pan/Drag)
 - Tastatur-Navigation (Pfeiltasten, ESC zum Schließen)
-- Touch-Support für Tablets/Smartphones
-- Drag & Drop Unterstützung
+- Touch-Support für Tablets/Smartphones (Wischen, Pinch-to-Zoom)
 - Responsive und barrierefrei
 
 ### Geschwister-Navigation (Sibling Navigation)
 - Vor/Zurück-Buttons unterhalb der Bildanzeige zum Durchklicken von Geschwister-Beschreibungen
-- Zeigt aktuelle Position (z.B. "2 von 5")
+- Zeigt aktuelle Position innerhalb der Elter-Verzeichnungseinheit (z.B. "2 von 5")
 - Navigation direkt in der Lightbox:
   - Pfeile links und rechts vom Bild für Vor/Zurück
   - Bildnummer und Link zum Öffnen in separatem Tab direkt in der Bildbeschreibung
-  - Keine doppelten Klicks erforderlich
-- Automatisches Öffnen der Lightbox nach Navigation
+  - Die Detailseite der Verzeichnungseinheit hinter der Lightbox wird automatisch geladen, sodass beim schliessen der Lightbox die aktuelle Seite angezeigt wird.
 
 ### Mehrsprachigkeit (i18n)
 - Deutsche und englische Übersetzungen für alle Plugin-spezifischen Texte
-- "Geschwister-Navigation" / "Navigate siblings"
-- "Bild in separatem Tab öffnen" / "Open image in separate tab"
+
 
 ## Installation
 
 ### Voraussetzungen
-- Artefactual AtoM (Version 2.x)
+- Artefactual AtoM (Version 2.7; Bootsgtrap 5 ready)
 - `arDominionB5Plugin` als Basis-Theme
 - Node.js und npm für den Build-Prozess
 
@@ -103,7 +101,7 @@ sudo -u www-data npm run dev
 3. Theme auswählen: "rutishauserThemeB5Plugin"
 4. Speichern
 
-#### Option 2: Via Datenbank
+#### Option 2: Via Datenbank (nicht getestet)
 ```sql
 UPDATE setting
 SET value = 'rutishauserThemeB5Plugin'
@@ -163,102 +161,6 @@ rutishauserThemeB5Plugin/
 └── webpack.entry.js                                     # Webpack Entry Point
 ```
 
-### Kopierte und angepasste Dateien
-
-Gemäß der [AtoM Theming-Dokumentation](https://www.accesstomemory.org/en/docs/2.10/admin-manual/customization/theming/) wurden folgende Dateien kopiert und angepasst:
-
-#### Templates
-- `templates/layout.php` - Standard-Layout mit Full-Width
-- `templates/layout_1col.php` - 1-Spalten Layout mit Full-Width
-- `templates/layout_2col.php` - 2-Spalten Layout mit Sidebar und Full-Width
-- `templates/layout_3col.php` - 3-Spalten Layout mit Sidebar, Context Menu und Full-Width
-- `templates/_header.php` - Header Partial mit Full-Width Container
-- `templates/_layout_start_webpack.php` - HTML Head (bereits im Skeleton vorhanden)
-
-#### Module Templates
-- `modules/digitalobject/templates/_showImage.php` - Bilder mit GLightbox-Attributen und Sibling-Daten
-- `modules/informationobject/templates/_siblingNavigation.php` - Vor/Zurück Buttons mit Counter
-
-#### Styling und JavaScript
-- `scss/main.scss` - Erweitert mit Full-Width Overrides, GLightbox und Sibling Navigation Styles
-- `js/main.js` - Importiert Dominion JS + GLightbox
-- `js/lightbox.js` - GLightbox Initialisierung mit Sibling Navigation in der Lightbox
-
-#### Übersetzungen
-- `i18n/de/messages.xml` - Deutsche Übersetzungen für Plugin-spezifische Texte
-- `i18n/en/messages.xml` - Englische Übersetzungen für Plugin-spezifische Texte
-
-### Eigene Anpassungen vornehmen
-
-#### Farben ändern
-Erstelle `scss/_variables.scss`:
-```scss
-// Deine Custom Colors
-$primary: #007bff;  // Anstatt Orange
-$secondary: #6c757d;
-
-// Bootstrap importieren
-@import "../../arDominionB5Plugin/scss/variables";
-```
-
-Dann in `scss/main.scss` vor dem Import einfügen:
-```scss
-@import "variables";
-@import "../../arDominionB5Plugin/scss/main.scss";
-```
-
-#### Weitere SCSS/CSS Anpassungen
-Ergänze deine Styles am Ende von `scss/main.scss`:
-```scss
-// Deine custom styles
-.custom-class {
-  // ...
-}
-```
-
-#### JavaScript erweitern
-Füge weitere Imports in `js/main.js` hinzu:
-```javascript
-// Eigene Module
-import './custom-feature.js';
-```
-
-## Technische Details
-
-### File Precedence
-Gemäß AtoM Dokumentation werden Dateien in folgender Reihenfolge geladen:
-1. `plugins/rutishauserThemeB5Plugin/` (höchste Priorität)
-2. `plugins/arDominionB5Plugin/`
-3. `apps/qubit/` (niedrigste Priorität)
-
-Die Plugin-Konfiguration stellt sicher, dass dieses Theme-Plugin an oberster Stelle geladen wird.
-
-### Container-Klassen Änderungen
-Alle folgenden Container-Klassen wurden auf volle Breite angepasst:
-- `container-xxl` → `container-fluid` (in allen Layout-Dateien)
-- `container-xl` → `container-fluid` (im Header)
-- SCSS Override: alle `.container*` Klassen erhalten `max-width: 100%`
-
-### GLightbox Integration
-Das Plugin nutzt GLightbox v3.3.0 für die Lightbox-Funktionalität:
-- Automatische Initialisierung für alle `.glightbox` Links
-- Custom Sibling Navigation wird dynamisch hinzugefügt
-- SessionStorage für Auto-Open nach Navigation
-- Data-Attribute für Sibling-Informationen (prev/next URLs, Titel, Position)
-
-### Sibling Navigation Implementation
-Die Navigation zwischen Geschwister-Beschreibungen erfolgt auf zwei Ebenen:
-
-1. **Unterhalb der Bildanzeige** (`_siblingNavigation.php`):
-   - PHP-basierte Navigation mit Vor/Zurück-Buttons
-   - Zeigt aktuelle Position (z.B. "2 von 5")
-   - Link zum Öffnen des Bildes in separatem Tab
-
-2. **In der Lightbox** (`lightbox.js`):
-   - JavaScript fügt dynamisch Navigationselemente hinzu
-   - Pfeile links und rechts vom Bild
-   - Bildnummer und Tab-Link in der Bildbeschreibung
-   - Auto-Open nach Navigation durch SessionStorage
 
 ## Troubleshooting
 
@@ -296,34 +198,6 @@ sudo -u www-data npm install
 sudo -u www-data npm run build
 ```
 
-### Lightbox öffnet nach doppeltem Klick
-Dies sollte mit den aktuellen Duplicate-Prevention-Checks behoben sein. Falls es weiterhin auftritt:
-1. Browser-Cache leeren
-2. Prüfen ob die neueste Version von `lightbox.js` deployed wurde
-3. JavaScript-Konsole auf Fehler prüfen
-
-## Testing
-
-### GLightbox testen
-1. Navigiere zu einem Digital Object (Archivbeschreibung mit Bild)
-2. Das Bild sollte einen `cursor: zoom-in` zeigen beim Hover
-3. Klick auf das Bild öffnet die Lightbox (nicht neuen Tab)
-4. In der Lightbox:
-   - Pfeiltasten funktionieren für Navigation
-   - ESC schließt die Lightbox
-   - Zoom mit Mausrad möglich
-   - Touch-Gesten auf Mobile funktionieren
-   - Drag & Drop zum Verschieben des Bildes
-
-### Sibling Navigation testen
-1. Navigiere zu einem Information Object mit Geschwistern (gleicher Parent)
-2. Unterhalb des Bildes sollte die Navigation erscheinen
-3. Klick auf "Zurück"/"Vor" navigiert zu Geschwister-Beschreibungen
-4. Öffne die Lightbox:
-   - Pfeile links/rechts vom Bild sollten erscheinen
-   - Bildbeschreibung zeigt "Bild X von Y | Bild in separatem Tab öffnen"
-   - Klick auf Pfeile navigiert zur nächsten/vorherigen Beschreibung
-   - Lightbox öffnet sich automatisch nach Navigation
 
 ## Lizenz
 
@@ -333,7 +207,7 @@ AGPL-3.0
 
 - Basiert auf [arDominionB5Plugin](https://github.com/artefactual/atom/tree/qa/2.x/plugins/arDominionB5Plugin)
 - Nutzt [GLightbox](https://github.com/biati-digital/glightbox) für die Lightbox-Funktionalität
-- Entwickelt für das Archiv Rutishauser
+- Entwickelt von Roger Rutishauser (roger.rutishauser@gmail.com) mit Hilfe von claude.ai
 
 ## Version
 

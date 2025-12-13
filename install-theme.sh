@@ -3,17 +3,19 @@
 # Installation script for rutishauserThemeB5Plugin
 # This script copies the theme to AtoM and performs necessary setup
 
+ATOM_DIR_NAME="atom"
+
 set -e  # Exit on error
 
 echo "=== AtoM Theme Installation Script ==="
 echo ""
 
 # 1) Prompt for AtoM installation path with default
-read -p "Enter AtoM installation path [default: /usr/share/nginx/atompast] (e.g. /usr/share/nginx/atom): " ATOM_PATH
+read -p "Enter AtoM installation path [default: /usr/share/nginx/$ATOM_DIR_NAME] (e.g. /usr/share/nginx/atom): " ATOM_PATH
 
 # Use default if empty
 if [ -z "$ATOM_PATH" ]; then
-    ATOM_PATH="/usr/share/nginx/atompast"
+    ATOM_PATH="/usr/share/nginx/$ATOM_DIR_NAME"
     echo "Using default path: $ATOM_PATH"
 fi
 
@@ -54,10 +56,22 @@ cd "$ATOM_PATH"
 sudo -u www-data npm run build
 
 # 6) Clear cache and restart PHP-FPM
-echo "Clearing AtoM cache and restarting PHP-FPM..."
+echo "Clearing AtoM cache..."
 cd "$ATOM_PATH"
 sudo -u www-data php symfony cc
-sudo systemctl restart php8.3-fpm.service
+
+echo "Restarting PHP-FPM..."
+# Automatically find the running PHP-FPM service
+PHP_FPM_SERVICE=$(systemctl list-units --type=service --state=running | grep -oP 'php\d+\.\d+-fpm\.service' | head -n 1)
+
+if [ -n "$PHP_FPM_SERVICE" ]; then
+    echo "Found PHP-FPM service: $PHP_FPM_SERVICE"
+    sudo systemctl restart "$PHP_FPM_SERVICE"
+    echo "PHP-FPM restarted successfully"
+else
+    echo "Warning: Could not find running PHP-FPM service."
+    echo "Please restart PHP-FPM manually: sudo systemctl restart phpX.X-fpm.service"
+fi
 
 # 7) Return to original directory
 echo "Returning to source directory..."
