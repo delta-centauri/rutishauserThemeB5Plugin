@@ -28,6 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Check if we should auto-open lightbox (from sibling navigation)
+  if (sessionStorage.getItem('openLightbox') === 'true') {
+    sessionStorage.removeItem('openLightbox');
+    // Wait a bit for page to fully load
+    setTimeout(() => {
+      const lightboxLink = document.querySelector('a.glightbox');
+      if (lightboxLink) {
+        lightboxLink.click();
+      }
+    }, 100);
+  }
+
   // Function to add sibling navigation to lightbox
   function addSiblingNavigation() {
     setTimeout(() => {
@@ -47,10 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Find the original link element to get data attributes
       const originalLink = findOriginalLinkForCurrentSlide();
 
-      console.log('Original link found:', originalLink);
-
       if (!originalLink) {
-        console.log('No original link found');
         return;
       }
 
@@ -61,8 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const siblingIndex = originalLink.dataset.siblingIndex;
       const siblingTotal = originalLink.dataset.siblingTotal;
 
-      console.log('Sibling data:', { prevUrl, nextUrl, siblingIndex, siblingTotal });
-
       // Add navigation arrows for siblings (left and right of image)
       if (prevUrl || nextUrl) {
         const navContainer = document.createElement('div');
@@ -72,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (prevUrl) {
           navHTML += `
-            <button class="gslide-sibling-prev" title="${prevTitle || 'Previous'}" data-url="${prevUrl}">
+            <button class="gslide-sibling-prev" title="${prevTitle || 'Vorheriger'}" data-url="${prevUrl}">
               <i class="fas fa-chevron-left"></i>
             </button>
           `;
@@ -80,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (nextUrl) {
           navHTML += `
-            <button class="gslide-sibling-next" title="${nextTitle || 'Next'}" data-url="${nextUrl}">
+            <button class="gslide-sibling-next" title="${nextTitle || 'Nächster'}" data-url="${nextUrl}">
               <i class="fas fa-chevron-right"></i>
             </button>
           `;
@@ -98,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
             const url = prevBtn.dataset.url;
-            if (url && currentLightbox) {
-              currentLightbox.close();
+            if (url) {
+              // Set flag to auto-open lightbox on next page
+              sessionStorage.setItem('openLightbox', 'true');
+              // Navigate to sibling page
               window.location.href = url;
             }
           });
@@ -110,8 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
             const url = nextBtn.dataset.url;
-            if (url && currentLightbox) {
-              currentLightbox.close();
+            if (url) {
+              // Set flag to auto-open lightbox on next page
+              sessionStorage.setItem('openLightbox', 'true');
+              // Navigate to sibling page
               window.location.href = url;
             }
           });
@@ -122,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (siblingIndex && siblingTotal) {
         const counterContainer = document.createElement('div');
         counterContainer.className = 'gslide-sibling-counter';
-        counterContainer.innerHTML = `<span>${siblingIndex} von ${siblingTotal}</span>`;
+        counterContainer.innerHTML = `<span>Bild ${siblingIndex} von ${siblingTotal}</span>`;
         slideInner.appendChild(counterContainer);
       }
     }, 100);
@@ -132,36 +143,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function findOriginalLinkForCurrentSlide() {
     const currentSlide = document.querySelector('.gslide.current');
     if (!currentSlide) {
-      console.log('No current slide found');
       return null;
     }
 
     const currentImg = currentSlide.querySelector('.ginner-container img, .gslide-image');
     if (!currentImg) {
-      console.log('No image in current slide');
       return null;
     }
 
     const imgSrc = currentImg.src;
-    console.log('Looking for image with src:', imgSrc);
 
     // Find all glightbox links
     const allLinks = document.querySelectorAll('a.glightbox');
-    console.log('Found glightbox links:', allLinks.length);
 
     // Try to match by href (exact match)
     for (const link of allLinks) {
       if (link.href === imgSrc) {
-        console.log('Found exact match by href');
-        return link;
-      }
-    }
-
-    // Try to match by data-glightbox attribute
-    for (const link of allLinks) {
-      const dataGlightbox = link.getAttribute('data-glightbox');
-      if (dataGlightbox && imgSrc.includes(dataGlightbox)) {
-        console.log('Found match by data-glightbox');
         return link;
       }
     }
@@ -169,18 +166,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Try to match by checking if link href is contained in img src
     for (const link of allLinks) {
       if (imgSrc.includes(link.href) || link.href.includes(imgSrc)) {
-        console.log('Found match by href contains');
         return link;
       }
     }
 
     // Fallback: use the first link (better than nothing)
     if (allLinks.length > 0) {
-      console.log('Using fallback: first link');
       return allLinks[0];
     }
 
-    console.log('No link found at all');
     return null;
   }
 });
