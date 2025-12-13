@@ -43,16 +43,12 @@ class rutishauserThemeB5PluginConfiguration extends arDominionB5PluginConfigurat
         }
         $this->configuration->setPlugins(array_merge([$this->name], $plugins));
 
-        // Load plugin i18n translations
-        $this->dispatcher->connect('context.load_factories', [$this, 'loadI18n']);
-    }
-
-    public function loadI18n()
-    {
-        $i18nDir = sfConfig::get('sf_plugins_dir').'/'.$this->name.'/i18n';
+        // Add plugin i18n directory to the global i18n configuration
+        $i18nDir = $this->rootDir.'/i18n';
         if (is_dir($i18nDir)) {
-            ProjectConfiguration::getActive()->loadHelpers('I18N');
-            sfContext::getInstance()->getI18N()->addTranslationDir($i18nDir);
+            $dirs = sfConfig::get('sf_i18n_dirs', []);
+            array_unshift($dirs, $i18nDir);
+            sfConfig::set('sf_i18n_dirs', $dirs);
         }
     }
 }
