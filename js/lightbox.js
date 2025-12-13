@@ -3,6 +3,8 @@ import GLightbox from 'glightbox';
 
 // Initialize GLightbox for digital object images with sibling navigation
 document.addEventListener('DOMContentLoaded', () => {
+  let currentLightbox = null;
+
   const lightbox = GLightbox({
     selector: '.glightbox',
     touchNavigation: true,
@@ -17,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add custom sibling navigation when lightbox opens or slides change
     onOpen: () => {
+      currentLightbox = lightbox;
       addSiblingNavigation();
     },
 
@@ -43,7 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Find the original link element to get data attributes
       const originalLink = findOriginalLinkForCurrentSlide();
-      if (!originalLink) return;
+
+      console.log('Original link found:', originalLink);
+
+      if (!originalLink) {
+        console.log('No original link found');
+        return;
+      }
 
       const prevUrl = originalLink.dataset.prevUrl;
       const nextUrl = originalLink.dataset.nextUrl;
@@ -52,63 +61,126 @@ document.addEventListener('DOMContentLoaded', () => {
       const siblingIndex = originalLink.dataset.siblingIndex;
       const siblingTotal = originalLink.dataset.siblingTotal;
 
+      console.log('Sibling data:', { prevUrl, nextUrl, siblingIndex, siblingTotal });
+
       // Add navigation arrows for siblings (left and right of image)
       if (prevUrl || nextUrl) {
         const navContainer = document.createElement('div');
         navContainer.className = 'gslide-sibling-nav';
-        navContainer.innerHTML = `
-          ${prevUrl ? `
-            <a href="${prevUrl}" class="gslide-sibling-prev" title="${prevTitle || 'Previous'}">
+
+        let navHTML = '';
+
+        if (prevUrl) {
+          navHTML += `
+            <button class="gslide-sibling-prev" title="${prevTitle || 'Previous'}" data-url="${prevUrl}">
               <i class="fas fa-chevron-left"></i>
-            </a>
-          ` : ''}
-          ${nextUrl ? `
-            <a href="${nextUrl}" class="gslide-sibling-next" title="${nextTitle || 'Next'}">
+            </button>
+          `;
+        }
+
+        if (nextUrl) {
+          navHTML += `
+            <button class="gslide-sibling-next" title="${nextTitle || 'Next'}" data-url="${nextUrl}">
               <i class="fas fa-chevron-right"></i>
-            </a>
-          ` : ''}
-        `;
+            </button>
+          `;
+        }
+
+        navContainer.innerHTML = navHTML;
         slideInner.appendChild(navContainer);
+
+        // Add click event handlers
+        const prevBtn = navContainer.querySelector('.gslide-sibling-prev');
+        const nextBtn = navContainer.querySelector('.gslide-sibling-next');
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = prevBtn.dataset.url;
+            if (url && currentLightbox) {
+              currentLightbox.close();
+              window.location.href = url;
+            }
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = nextBtn.dataset.url;
+            if (url && currentLightbox) {
+              currentLightbox.close();
+              window.location.href = url;
+            }
+          });
+        }
       }
 
       // Add sibling counter at bottom center
       if (siblingIndex && siblingTotal) {
         const counterContainer = document.createElement('div');
         counterContainer.className = 'gslide-sibling-counter';
-        counterContainer.innerHTML = `<span>${siblingIndex} of ${siblingTotal}</span>`;
+        counterContainer.innerHTML = `<span>${siblingIndex} von ${siblingTotal}</span>`;
         slideInner.appendChild(counterContainer);
       }
-    }, 50);
+    }, 100);
   }
 
   // Helper function to find the original link element for current slide
   function findOriginalLinkForCurrentSlide() {
     const currentSlide = document.querySelector('.gslide.current');
-    if (!currentSlide) return null;
+    if (!currentSlide) {
+      console.log('No current slide found');
+      return null;
+    }
 
-    const currentImg = currentSlide.querySelector('.ginner-container img');
-    if (!currentImg) return null;
+    const currentImg = currentSlide.querySelector('.ginner-container img, .gslide-image');
+    if (!currentImg) {
+      console.log('No image in current slide');
+      return null;
+    }
 
-    const imgHref = currentImg.src;
+    const imgSrc = currentImg.src;
+    console.log('Looking for image with src:', imgSrc);
 
     // Find all glightbox links
     const allLinks = document.querySelectorAll('a.glightbox');
+    console.log('Found glightbox links:', allLinks.length);
 
-    // Try to match by href
+    // Try to match by href (exact match)
     for (const link of allLinks) {
-      if (link.href === imgHref) {
+      if (link.href === imgSrc) {
+        console.log('Found exact match by href');
         return link;
       }
     }
 
-    // Try to match by contained image src
+    // Try to match by data-glightbox attribute
     for (const link of allLinks) {
-      const img = link.querySelector('img');
-      if (img && currentImg.src.includes(img.src.split('/').pop())) {
+      const dataGlightbox = link.getAttribute('data-glightbox');
+      if (dataGlightbox && imgSrc.includes(dataGlightbox)) {
+        console.log('Found match by data-glightbox');
         return link;
       }
     }
 
-    return allLinks[0]; // Fallback to first link
+    // Try to match by checking if link href is contained in img src
+    for (const link of allLinks) {
+      if (imgSrc.includes(link.href) || link.href.includes(imgSrc)) {
+        console.log('Found match by href contains');
+        return link;
+      }
+    }
+
+    // Fallback: use the first link (better than nothing)
+    if (allLinks.length > 0) {
+      console.log('Using fallback: first link');
+      return allLinks[0];
+    }
+
+    console.log('No link found at all');
+    return null;
   }
 });
