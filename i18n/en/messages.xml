@@ -13,6 +13,11 @@
         <target>Navigate siblings</target>
       </trans-unit>
 
+      <trans-unit id="2">
+        <source>Open image in separate tab</source>
+        <target>Open image in separate tab</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

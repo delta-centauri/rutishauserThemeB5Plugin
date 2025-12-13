@@ -66,10 +66,14 @@ footer > .container-fluid {
 //   margin-right: auto;
 // }
 
-// GLightbox custom styles for Roger Theme
+// GLightbox custom styles for rutishauser Theme
 .gslide-description {
   background: rgba(0, 0, 0, 0.8);
   padding: 1rem;
+}
+.glightbox-clean .gdesc-inner {
+  padding: 7px 0;
+  text-align: center;
 }
 
 .glightbox-clean .gclose,
@@ -144,30 +148,8 @@ footer > .container-fluid {
   }
 }
 
-// Sibling Counter in Lightbox (bottom center)
-.gslide-sibling-counter {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-
-  span {
-    display: inline-block;
-  }
-
-  .separator {
-    margin: 0 0.5rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
+// Sibling Counter and Link in Lightbox Description
+.gslide-desc {
   a {
     color: white;
     text-decoration: underline;
@@ -175,6 +157,10 @@ footer > .container-fluid {
     &:hover {
       color: rgba(255, 255, 255, 0.8);
     }
+  }
+
+  .separator {
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 

@@ -13,6 +13,11 @@
         <target>Geschwister-Navigation</target>
       </trans-unit>
 
+      <trans-unit id="2">
+        <source>Open image in separate tab</source>
+        <target>Bild in separatem Tab öffnen</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

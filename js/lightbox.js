@@ -110,11 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
       slideInner.appendChild(navContainer);
     }
 
-    // Add sibling counter at bottom center with link to open in new tab
+    // Add sibling counter and link to description area
     if (siblingIndex && siblingTotal) {
-      const counterContainer = document.createElement('div');
-      counterContainer.className = 'gslide-sibling-counter';
-
       // Get the current image URL from the lightbox
       const currentSlide = activeSlide.querySelector('.gslide-image img');
       const imageUrl = currentSlide ? currentSlide.src : '';
@@ -123,13 +120,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const lang = document.documentElement.lang || 'de';
       const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
 
-      counterContainer.innerHTML = `
-        <span>Bild ${siblingIndex} von ${siblingTotal}</span>
-        <span class="separator">|</span>
-        <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>
-      `;
+      // Find the description element
+      const descElement = activeSlide.querySelector('.gslide-desc');
 
-      slideInner.appendChild(counterContainer);
+      if (descElement) {
+        // Get existing text content
+        const existingText = descElement.textContent.trim();
+
+        // Create the counter and link HTML
+        const counterAndLink = `
+          <span class="separator"> | </span>
+          <span>Bild ${siblingIndex} von ${siblingTotal}</span>
+          <span class="separator"> | </span>
+          <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>
+        `;
+
+        // Append to existing description
+        descElement.innerHTML = existingText + counterAndLink;
+      }
     }
   }
 });
