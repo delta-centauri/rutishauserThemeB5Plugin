@@ -37,6 +37,7 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
 <?php if (QubitTerm::MASTER_ID == $usageType || QubitTerm::REFERENCE_ID == $usageType) { ?>
 
   <?php if (isset($link)) { ?>
+    <!-- DEBUG: Siblings count: <?php echo count($siblings); ?>, Current: <?php echo $currentIndex; ?>, InfoObject: <?php echo $infoObject ? 'YES' : 'NO'; ?> -->
     <?php
       $linkAttrs = [
         'class' => 'glightbox',
@@ -48,14 +49,22 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
       if (count($siblings) > 0) {
         $linkAttrs['data-sibling-index'] = $currentIndex + 1;
         $linkAttrs['data-sibling-total'] = count($siblings);
+        // DEBUG
+        echo "<!-- DEBUG: Adding index=" . ($currentIndex + 1) . ", total=" . count($siblings) . " -->";
       }
       if ($prevSibling) {
-        $linkAttrs['data-prev-url'] = url_for([$prevSibling, 'module' => 'informationobject']);
+        $prevUrl = url_for([$prevSibling, 'module' => 'informationobject']);
+        $linkAttrs['data-prev-url'] = $prevUrl;
         $linkAttrs['data-prev-title'] = esc_entities($prevSibling->getTitle(['cultureFallback' => true]));
+        // DEBUG
+        echo "<!-- DEBUG: Prev URL: " . $prevUrl . " -->";
       }
       if ($nextSibling) {
-        $linkAttrs['data-next-url'] = url_for([$nextSibling, 'module' => 'informationobject']);
+        $nextUrl = url_for([$nextSibling, 'module' => 'informationobject']);
+        $linkAttrs['data-next-url'] = $nextUrl;
         $linkAttrs['data-next-title'] = esc_entities($nextSibling->getTitle(['cultureFallback' => true]));
+        // DEBUG
+        echo "<!-- DEBUG: Next URL: " . $nextUrl . " -->";
       }
 
       echo link_to(
