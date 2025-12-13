@@ -10,7 +10,23 @@ $infoObject = null;
 
 // $resource is the QubitDigitalObject, get the related InformationObject
 if (isset($resource) && $resource instanceof QubitDigitalObject) {
-    $infoObject = $resource->object;
+    // Try different possible ways to get the InformationObject
+    $infoObject = null;
+
+    // Method 1: Direct property access
+    if (isset($resource->object)) {
+        $infoObject = $resource->object;
+    }
+
+    // Method 2: Try objectId property
+    if (!$infoObject && isset($resource->objectId)) {
+        $infoObject = QubitInformationObject::getById($resource->objectId);
+    }
+
+    // Method 3: Try informationObject property
+    if (!$infoObject && isset($resource->informationObject)) {
+        $infoObject = $resource->informationObject;
+    }
 }
 
 if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
@@ -37,7 +53,14 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
 <?php if (QubitTerm::MASTER_ID == $usageType || QubitTerm::REFERENCE_ID == $usageType) { ?>
 
   <?php if (isset($link)) { ?>
-    <!-- DEBUG: Siblings count: <?php echo count($siblings); ?>, Current: <?php echo $currentIndex; ?>, InfoObject: <?php echo $infoObject ? 'YES' : 'NO'; ?> -->
+    <!-- DEBUG START -->
+    <!-- Siblings count: <?php echo count($siblings); ?> -->
+    <!-- Current index: <?php echo $currentIndex; ?> -->
+    <!-- InfoObject: <?php echo $infoObject ? 'YES (ID: ' . $infoObject->id . ')' : 'NO'; ?> -->
+    <!-- Resource class: <?php echo get_class($resource); ?> -->
+    <!-- Resource has object property: <?php echo isset($resource->object) ? 'YES' : 'NO'; ?> -->
+    <!-- Resource has objectId property: <?php echo isset($resource->objectId) ? 'YES (' . $resource->objectId . ')' : 'NO'; ?> -->
+    <!-- DEBUG END -->
     <?php
       $linkAttrs = [
         'class' => 'glightbox',
