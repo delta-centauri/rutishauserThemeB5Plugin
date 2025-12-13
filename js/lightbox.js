@@ -36,6 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
+  // Add link to open image in new tab below sibling navigation
+  const siblingCounterText = document.getElementById('sibling-counter-text');
+  if (siblingCounterText) {
+    const lightboxLink = document.querySelector('a.glightbox');
+    if (lightboxLink) {
+      // Get the image URL from the lightbox link's href
+      const imageUrl = lightboxLink.href;
+
+      // Determine language
+      const lang = document.documentElement.lang || 'de';
+      const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
+
+      // Add separator and link
+      siblingCounterText.innerHTML += ` | <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+    }
+  }
+
   // Function to add sibling navigation to lightbox
   function addSiblingNavigation(lightboxInstance) {
     // Wait for DOM to be ready with retry logic

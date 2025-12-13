@@ -72,27 +72,9 @@ if (isset($resource) && $resource->parentId != QubitInformationObject::ROOT_ID) 
     
     <?php if (count($siblings) > 0) { ?>
       <div class="text-muted small mt-2 text-center">
-        <?php echo __('%1% of %2%', ['%1%' => $currentIndex + 1, '%2%' => count($siblings)]); ?>
-        <?php if (!empty($resource->getDigitalObject())) { ?>
-          <?php
-            $digitalObject = $resource->getDigitalObject();
-            $imageUrl = null;
-
-            // Try to get the master digital object URL
-            if ($digitalObject) {
-              $representations = $digitalObject->getRepresentationsByUsage(QubitTerm::MASTER_ID);
-              if (count($representations) > 0) {
-                $imageUrl = $representations[0]->getFullPath();
-              }
-            }
-          ?>
-          <?php if ($imageUrl) { ?>
-            |
-            <a href="<?php echo $imageUrl; ?>" target="_blank" rel="noopener noreferrer">
-              <?php echo __('Open image in separate tab'); ?>
-            </a>
-          <?php } ?>
-        <?php } ?>
+        <span id="sibling-counter-text">
+          <?php echo __('%1% of %2%', ['%1%' => $currentIndex + 1, '%2%' => count($siblings)]); ?>
+        </span>
       </div>
     <?php } ?>
   </section>
