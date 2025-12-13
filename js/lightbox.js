@@ -70,12 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Remove existing sibling navigation if present
-    const existingNav = slideInner.querySelector('.gslide-sibling-nav');
-    if (existingNav) existingNav.remove();
-
-    const existingCounter = slideInner.querySelector('.gslide-sibling-counter');
-    if (existingCounter) existingCounter.remove();
+    // Check if navigation already exists - if so, don't add again
+    if (slideInner.querySelector('.gslide-sibling-nav')) {
+      return;
+    }
 
     // Get data from the first glightbox link on the page
     const originalLink = document.querySelector('a.glightbox');
@@ -129,18 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add sibling counter and link to description area
     if (siblingIndex && siblingTotal) {
-      // Get the current image URL from the lightbox
-      const currentSlide = activeSlide.querySelector('.gslide-image img');
-      const imageUrl = currentSlide ? currentSlide.src : '';
-
-      // Determine language for link text (check HTML lang attribute or default to German)
-      const lang = document.documentElement.lang || 'de';
-      const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
-
       // Find the description element
       const descElement = activeSlide.querySelector('.gslide-desc');
 
-      if (descElement) {
+      // Only add if not already added (check if separator exists)
+      if (descElement && !descElement.querySelector('.separator')) {
+        // Get the current image URL from the lightbox
+        const currentSlide = activeSlide.querySelector('.gslide-image img');
+        const imageUrl = currentSlide ? currentSlide.src : '';
+
+        // Determine language for link text (check HTML lang attribute or default to German)
+        const lang = document.documentElement.lang || 'de';
+        const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
+
         // Get existing text content
         const existingText = descElement.textContent.trim();
 
