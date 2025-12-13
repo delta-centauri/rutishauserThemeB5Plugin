@@ -79,7 +79,7 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
         $linkAttrs = [
           'class' => 'glightbox',
           'data-gallery' => 'digital-object-gallery',
-          'data-description' => esc_entities($resource->getTitle(['cultureFallback' => true]))
+          'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
         ];
         if (count($siblings) > 0) {
           $linkAttrs['data-sibling-index'] = $currentIndex + 1;
@@ -116,7 +116,7 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
             $linkAttrs = [
               'class' => 'glightbox',
               'data-gallery' => 'digital-object-gallery',
-              'data-description' => esc_entities($resource->getTitle(['cultureFallback' => true]))
+              'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
             ];
             if (count($siblings) > 0) {
               $linkAttrs['data-sibling-index'] = $currentIndex + 1;
