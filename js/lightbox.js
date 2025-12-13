@@ -1,5 +1,5 @@
-// Import GLightbox from plugin's own node_modules
-import GLightbox from '../../rutishauserThemeB5Plugin/node_modules/glightbox';
+// Import GLightbox
+import GLightbox from 'glightbox';
 
 // Initialize GLightbox for digital object images
 document.addEventListener('DOMContentLoaded', () => {

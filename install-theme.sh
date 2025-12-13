@@ -36,18 +36,23 @@ echo "Setting permissions and ownership..."
 sudo chmod -R 775 "$TARGET_DIR"
 sudo chown -R www-data:www-data "$TARGET_DIR"
 
-# 4) Install npm dependencies and build from AtoM root
-echo "Installing npm dependencies..."
-cd "$ATOM_PATH"
+# 4) Install npm dependencies for the plugin
+echo "Installing plugin npm dependencies..."
+cd "$TARGET_DIR"
 sudo -u www-data npm install
 
-# 5) Clear cache and restart PHP-FPM
+# 5) Build plugin assets from AtoM root
+echo "Building plugin assets..."
+cd "$ATOM_PATH"
+sudo -u www-data make -C "plugins/$PLUGIN_NAME"
+
+# 6) Clear cache and restart PHP-FPM
 echo "Clearing AtoM cache and restarting PHP-FPM..."
 cd "$ATOM_PATH"
 sudo -u www-data php symfony cc
 sudo systemctl restart php8.3-fpm.service
 
-# 6) Return to original directory
+# 7) Return to original directory
 echo "Returning to source directory..."
 cd "$SOURCE_DIR"
 
