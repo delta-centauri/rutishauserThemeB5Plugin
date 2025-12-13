@@ -41,10 +41,10 @@ echo "Installing plugin npm dependencies..."
 cd "$TARGET_DIR"
 sudo -u www-data npm install
 
-# 5) Build plugin assets from AtoM root
-echo "Building plugin assets..."
+# 5) Build all assets from AtoM root (includes plugin)
+echo "Building assets with webpack..."
 cd "$ATOM_PATH"
-sudo -u www-data make -C "plugins/$PLUGIN_NAME"
+sudo -u www-data npm run build
 
 # 6) Clear cache and restart PHP-FPM
 echo "Clearing AtoM cache and restarting PHP-FPM..."
