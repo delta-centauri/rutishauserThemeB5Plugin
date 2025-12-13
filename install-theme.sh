@@ -55,23 +55,10 @@ echo "Building assets with webpack..."
 cd "$ATOM_PATH"
 sudo -u www-data npm run build
 
-# Clear cache and restart PHP-FPM
+# Clear cache
 echo "Clearing AtoM cache..."
 cd "$ATOM_PATH"
 sudo -u www-data php symfony cc
-
-echo "Restarting PHP-FPM..."
-# Automatically find the running PHP-FPM service
-PHP_FPM_SERVICE=$(systemctl list-units --type=service --state=running | grep -oP 'php\d+\.\d+-fpm\.service' | head -n 1)
-
-if [ -n "$PHP_FPM_SERVICE" ]; then
-    echo "Found PHP-FPM service: $PHP_FPM_SERVICE"
-    sudo systemctl restart "$PHP_FPM_SERVICE"
-    echo "PHP-FPM restarted successfully"
-else
-    echo "Warning: Could not find running PHP-FPM service."
-    echo "Please restart PHP-FPM manually: sudo systemctl restart phpX.X-fpm.service"
-fi
 
 # Return to original directory
 echo "Returning to source directory..."
