@@ -18,7 +18,8 @@ if [ ! -d "$ATOM_PATH" ]; then
 fi
 
 PLUGIN_NAME="rutishauserThemeB5Plugin"
-SOURCE_DIR="$HOME/git-repositories/$PLUGIN_NAME"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SOURCE_DIR="$SCRIPT_DIR"
 TARGET_DIR="$ATOM_PATH/plugins/$PLUGIN_NAME"
 
 echo ""
