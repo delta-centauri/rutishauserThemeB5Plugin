@@ -8,24 +8,18 @@ $prevSibling = null;
 $nextSibling = null;
 $infoObject = null;
 
-// $resource is the QubitDigitalObject, get the related InformationObject
-if (isset($resource) && $resource instanceof QubitDigitalObject) {
-    // Try different possible ways to get the InformationObject
-    $infoObject = null;
-
-    // Method 1: Direct property access
-    if (isset($resource->object)) {
-        $infoObject = $resource->object;
+// $resource is the QubitDigitalObject (may be wrapped in sfOutputEscaperObjectDecorator)
+// Get the InformationObject that this DigitalObject belongs to
+if (isset($resource)) {
+    // Get raw object if wrapped in output escaper
+    $digitalObject = $resource;
+    if ($resource instanceof sfOutputEscaperObjectDecorator) {
+        $digitalObject = $resource->getRawValue();
     }
 
-    // Method 2: Try objectId property
-    if (!$infoObject && isset($resource->objectId)) {
-        $infoObject = QubitInformationObject::getById($resource->objectId);
-    }
-
-    // Method 3: Try informationObject property
-    if (!$infoObject && isset($resource->informationObject)) {
-        $infoObject = $resource->informationObject;
+    // Get the related InformationObject using the objectId
+    if (isset($digitalObject->objectId)) {
+        $infoObject = QubitInformationObject::getById($digitalObject->objectId);
     }
 }
 
