@@ -68,14 +68,36 @@ sudo -u www-data php symfony cc
 echo "  Removing residual PHP cache files..."
 sudo find "$ATOM_PATH/cache" -type f \( -name "*.php" -o -name "*.html" \) -delete
 
-# 3. Nginx FastCGI cache (optional, only if configured)
+# 3. Restart PHP-FPM to clear APCu in-memory cache.
+#    AtoM uses sfAPCCache which stores compiled templates in RAM.
+#    Without this step the old webpack bundle hash remains cached and the
+#    new JS/CSS bundles (with updated content hashes) fail to load.
+echo "  Restarting PHP-FPM to clear APCu in-memory cache..."
+PHP_FPM_SERVICE=""
+for candidate in php8.4-fpm php8.3-fpm php8.2-fpm php8.1-fpm php8.0-fpm php7.4-fpm php-fpm; do
+    if systemctl list-units --type=service --all 2>/dev/null | grep -q "${candidate}.service"; then
+        PHP_FPM_SERVICE="$candidate"
+        break
+    fi
+done
+
+if [ -n "$PHP_FPM_SERVICE" ]; then
+    sudo systemctl restart "$PHP_FPM_SERVICE"
+    echo "  PHP-FPM restarted ($PHP_FPM_SERVICE)."
+else
+    echo "  WARNING: Could not detect PHP-FPM service name."
+    echo "  Please restart PHP-FPM manually to clear APCu cache, e.g.:"
+    echo "    sudo systemctl restart php8.2-fpm"
+fi
+
+# 4. Nginx FastCGI cache (optional, only if configured)
 NGINX_CACHE_DIR="/var/cache/nginx"
 if [ -d "$NGINX_CACHE_DIR" ] && [ "$(sudo find "$NGINX_CACHE_DIR" -maxdepth 1 -mindepth 1 | head -1)" != "" ]; then
     echo "  Clearing Nginx FastCGI cache..."
     sudo find "$NGINX_CACHE_DIR" -type f -delete
 fi
 
-# 4. Varnish cache (optional, only if varnishadm is available)
+# 5. Varnish cache (optional, only if varnishadm is available)
 if command -v varnishadm &> /dev/null; then
     echo "  Clearing Varnish cache..."
     sudo varnishadm "ban req.url ~ /" 2>/dev/null && echo "  Varnish cleared." || echo "  Varnish ban failed (non-fatal)."
