@@ -43,6 +43,7 @@ if (isset($resource) && $resource->parentId != QubitInformationObject::ROOT_ID) 
         <a href="<?php echo url_for([$prevSibling, 'module' => 'informationobject']); ?>" 
            class="btn btn-sm btn-outline-secondary flex-fill" 
            title="<?php echo esc_entities($prevSibling->getTitle(['cultureFallback' => true])); ?>"
+           data-direction="prev"
            data-bs-toggle="tooltip">
           <i class="fas fa-chevron-left me-1" aria-hidden="true"></i>
           <?php echo __('Previous'); ?>
@@ -58,6 +59,7 @@ if (isset($resource) && $resource->parentId != QubitInformationObject::ROOT_ID) 
         <a href="<?php echo url_for([$nextSibling, 'module' => 'informationobject']); ?>" 
            class="btn btn-sm btn-outline-secondary flex-fill"
            title="<?php echo esc_entities($nextSibling->getTitle(['cultureFallback' => true])); ?>"
+           data-direction="next"
            data-bs-toggle="tooltip">
           <?php echo __('Next'); ?>
           <i class="fas fa-chevron-right ms-1" aria-hidden="true"></i>

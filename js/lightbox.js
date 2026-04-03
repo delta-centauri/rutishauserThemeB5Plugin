@@ -36,20 +36,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
-  // Add link to open image in new tab below sibling navigation
+  // Add link to open image in new tab below sibling navigation (page-level, outside lightbox)
   const siblingCounterText = document.getElementById('sibling-counter-text');
   if (siblingCounterText) {
     const lightboxLink = document.querySelector('a.glightbox');
     if (lightboxLink) {
-      // Get the image URL from the lightbox link's href
       const imageUrl = lightboxLink.href;
+      // Use PHP-rendered translated label via data attribute
+      const labelOpenTab = lightboxLink.dataset.labelOpenTab || 'Open image in separate tab';
 
-      // Determine language
-      const lang = document.documentElement.lang || 'de';
-      const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
+      const sep = document.createElement('span');
+      sep.setAttribute('aria-hidden', 'true');
+      sep.textContent = ' | ';
 
-      // Add separator and link
-      siblingCounterText.innerHTML += ` | <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+      const openTabLink = document.createElement('a');
+      openTabLink.href = imageUrl;
+      openTabLink.target = '_blank';
+      openTabLink.rel = 'noopener noreferrer';
+      openTabLink.textContent = labelOpenTab;
+
+      siblingCounterText.appendChild(sep);
+      siblingCounterText.appendChild(openTabLink);
     }
   }
 
@@ -86,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextUrl = originalLink.dataset.nextUrl;
     const prevTitle = originalLink.dataset.prevTitle;
     const nextTitle = originalLink.dataset.nextTitle;
-    const siblingIndex = originalLink.dataset.siblingIndex;
-    const siblingTotal = originalLink.dataset.siblingTotal;
+    // PHP renders the translated count label (e.g. "2 of 5") via AtoM's __() helper
+    const imageCountLabel = originalLink.dataset.imageCountLabel;
+    const labelOpenTab = originalLink.dataset.labelOpenTab || 'Open image in separate tab';
 
     // Add navigation arrows for siblings (left and right of image)
     if (prevUrl || nextUrl) {
@@ -97,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (prevUrl) {
         const prevBtn = document.createElement('button');
         prevBtn.className = 'gslide-sibling-prev';
-        prevBtn.title = prevTitle || 'Vorheriger';
+        prevBtn.title = prevTitle || '';
         prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
         prevBtn.onclick = (e) => {
           e.preventDefault();
@@ -111,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nextUrl) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'gslide-sibling-next';
-        nextBtn.title = nextTitle || 'Nächster';
+        nextBtn.title = nextTitle || '';
         nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
         nextBtn.onclick = (e) => {
           e.preventDefault();
@@ -125,34 +133,42 @@ document.addEventListener('DOMContentLoaded', () => {
       slideInner.appendChild(navContainer);
     }
 
-    // Add sibling counter and link to description area
-    if (siblingIndex && siblingTotal) {
-      // Find the description element
+    // Add image count and open-in-tab link to description area
+    if (imageCountLabel) {
       const descElement = activeSlide.querySelector('.gslide-desc');
 
-      // Only add if not already added (check if separator exists)
+      // Only add if not already rendered (check for separator span)
       if (descElement && !descElement.querySelector('.separator')) {
-        // Get the current image URL from the lightbox
         const currentSlide = activeSlide.querySelector('.gslide-image img');
         const imageUrl = currentSlide ? currentSlide.src : '';
 
-        // Determine language for link text (check HTML lang attribute or default to German)
-        const lang = document.documentElement.lang || 'de';
-        const linkText = lang.startsWith('en') ? 'Open image in separate tab' : 'Bild in separatem Tab öffnen';
+        // Use DOM API - avoids innerHTML concatenation with untrusted values
+        const sep1 = document.createElement('span');
+        sep1.className = 'separator';
+        sep1.setAttribute('aria-hidden', 'true');
+        sep1.textContent = ' | ';
 
-        // Get existing text content
-        const existingText = descElement.textContent.trim();
+        const counter = document.createElement('span');
+        counter.textContent = imageCountLabel;
 
-        // Create the counter and link HTML
-        const counterAndLink = `
-          <span class="separator"> | </span>
-          <span>Bild ${siblingIndex} von ${siblingTotal}</span>
-          <span class="separator"> | </span>
-          <a href="${imageUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>
-        `;
+        descElement.appendChild(sep1);
+        descElement.appendChild(counter);
 
-        // Append to existing description
-        descElement.innerHTML = existingText + counterAndLink;
+        if (imageUrl) {
+          const sep2 = document.createElement('span');
+          sep2.className = 'separator';
+          sep2.setAttribute('aria-hidden', 'true');
+          sep2.textContent = ' | ';
+
+          const openTabLink = document.createElement('a');
+          openTabLink.href = imageUrl;
+          openTabLink.target = '_blank';
+          openTabLink.rel = 'noopener noreferrer';
+          openTabLink.textContent = labelOpenTab;
+
+          descElement.appendChild(sep2);
+          descElement.appendChild(openTabLink);
+        }
       }
     }
   }

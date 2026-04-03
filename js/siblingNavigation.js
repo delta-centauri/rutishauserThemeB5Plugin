@@ -9,9 +9,11 @@
       return;
     }
 
-    // Get prev/next links
-    const $prevLink = $siblingNav.find('a').first();
-    const $nextLink = $siblingNav.find('a').last();
+    // Get prev/next links via explicit data-direction attribute
+    // Using 'a' alone would fail at list boundaries (first/last item),
+    // where only one <a> exists and both .first()/.last() would point to the same element.
+    const $prevLink = $siblingNav.find('a[data-direction="prev"]');
+    const $nextLink = $siblingNav.find('a[data-direction="next"]');
 
     // Keyboard navigation: Arrow keys
     $(document).on('keydown', (e) => {

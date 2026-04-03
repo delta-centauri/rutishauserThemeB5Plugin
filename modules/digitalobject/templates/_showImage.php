@@ -42,34 +42,36 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
         }
     }
 }
+
+// Build shared link attributes for GLightbox integration (used by all usage types below)
+$linkAttrs = [
+    'class' => 'glightbox',
+    'data-gallery' => 'digital-object-gallery',
+    'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : '',
+    'data-label-open-tab' => esc_entities(__('Open image in separate tab')),
+];
+
+if (count($siblings) > 0) {
+    $linkAttrs['data-sibling-index'] = $currentIndex + 1;
+    $linkAttrs['data-sibling-total'] = count($siblings);
+    $linkAttrs['data-image-count-label'] = esc_entities(
+        __('%1% of %2%', ['%1%' => $currentIndex + 1, '%2%' => count($siblings)])
+    );
+}
+if ($prevSibling) {
+    $linkAttrs['data-prev-url'] = url_for([$prevSibling, 'module' => 'informationobject']);
+    $linkAttrs['data-prev-title'] = esc_entities($prevSibling->getTitle(['cultureFallback' => true]));
+}
+if ($nextSibling) {
+    $linkAttrs['data-next-url'] = url_for([$nextSibling, 'module' => 'informationobject']);
+    $linkAttrs['data-next-title'] = esc_entities($nextSibling->getTitle(['cultureFallback' => true]));
+}
 ?>
 
 <?php if (QubitTerm::MASTER_ID == $usageType || QubitTerm::REFERENCE_ID == $usageType) { ?>
 
   <?php if (isset($link)) { ?>
     <?php
-      $linkAttrs = [
-        'class' => 'glightbox',
-        'data-gallery' => 'digital-object-gallery',
-        'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
-      ];
-
-      // Add sibling navigation data
-      if (count($siblings) > 0) {
-        $linkAttrs['data-sibling-index'] = $currentIndex + 1;
-        $linkAttrs['data-sibling-total'] = count($siblings);
-      }
-      if ($prevSibling) {
-        $prevUrl = url_for([$prevSibling, 'module' => 'informationobject']);
-        $linkAttrs['data-prev-url'] = $prevUrl;
-        $linkAttrs['data-prev-title'] = esc_entities($prevSibling->getTitle(['cultureFallback' => true]));
-      }
-      if ($nextSibling) {
-        $nextUrl = url_for([$nextSibling, 'module' => 'informationobject']);
-        $linkAttrs['data-next-url'] = $nextUrl;
-        $linkAttrs['data-next-title'] = esc_entities($nextSibling->getTitle(['cultureFallback' => true]));
-      }
-
       echo link_to(
         image_tag($representation->getFullPath(), [
           'alt' => __($resource->getDigitalObjectAltText() ?: 'Open original %1%', ['%1%' => sfConfig::get('app_ui_label_digitalobject')]),
@@ -88,23 +90,6 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
   <?php if ($iconOnly) { ?>
     <?php if (isset($link)) { ?>
       <?php
-        $linkAttrs = [
-          'class' => 'glightbox',
-          'data-gallery' => 'digital-object-gallery',
-          'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
-        ];
-        if (count($siblings) > 0) {
-          $linkAttrs['data-sibling-index'] = $currentIndex + 1;
-          $linkAttrs['data-sibling-total'] = count($siblings);
-        }
-        if ($prevSibling) {
-          $linkAttrs['data-prev-url'] = url_for([$prevSibling, 'module' => 'informationobject']);
-          $linkAttrs['data-prev-title'] = esc_entities($prevSibling->getTitle(['cultureFallback' => true]));
-        }
-        if ($nextSibling) {
-          $linkAttrs['data-next-url'] = url_for([$nextSibling, 'module' => 'informationobject']);
-          $linkAttrs['data-next-title'] = esc_entities($nextSibling->getTitle(['cultureFallback' => true]));
-        }
         echo link_to(
           image_tag($representation->getFullPath(), [
             'alt' => __($resource->getDigitalObjectAltText() ?: 'Open original %1%', ['%1%' => sfConfig::get('app_ui_label_digitalobject')]),
@@ -125,23 +110,6 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
       <div class="digitalObjectRep">
         <?php if (isset($link)) { ?>
           <?php
-            $linkAttrs = [
-              'class' => 'glightbox',
-              'data-gallery' => 'digital-object-gallery',
-              'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : ''
-            ];
-            if (count($siblings) > 0) {
-              $linkAttrs['data-sibling-index'] = $currentIndex + 1;
-              $linkAttrs['data-sibling-total'] = count($siblings);
-            }
-            if ($prevSibling) {
-              $linkAttrs['data-prev-url'] = url_for([$prevSibling, 'module' => 'informationobject']);
-              $linkAttrs['data-prev-title'] = esc_entities($prevSibling->getTitle(['cultureFallback' => true]));
-            }
-            if ($nextSibling) {
-              $linkAttrs['data-next-url'] = url_for([$nextSibling, 'module' => 'informationobject']);
-              $linkAttrs['data-next-title'] = esc_entities($nextSibling->getTitle(['cultureFallback' => true]));
-            }
             echo link_to(
               image_tag($representation->getFullPath(), [
                 'alt' => __($resource->getDigitalObjectAltText() ?: 'Open original %1%', ['%1%' => sfConfig::get('app_ui_label_digitalobject')]),
