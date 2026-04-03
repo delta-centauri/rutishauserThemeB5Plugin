@@ -60,7 +60,26 @@ sudo -u www-data npm run build
 # Clear cache
 echo "Clearing AtoM cache..."
 cd "$ATOM_PATH"
+
+# 1. AtoM symfony cache (config + template cache)
 sudo -u www-data php symfony cc
+
+# 2. Remaining PHP cache files not removed by symfony cc
+echo "  Removing residual PHP cache files..."
+sudo find "$ATOM_PATH/cache" -type f \( -name "*.php" -o -name "*.html" \) -delete
+
+# 3. Nginx FastCGI cache (optional, only if configured)
+NGINX_CACHE_DIR="/var/cache/nginx"
+if [ -d "$NGINX_CACHE_DIR" ] && [ "$(sudo find "$NGINX_CACHE_DIR" -maxdepth 1 -mindepth 1 | head -1)" != "" ]; then
+    echo "  Clearing Nginx FastCGI cache..."
+    sudo find "$NGINX_CACHE_DIR" -type f -delete
+fi
+
+# 4. Varnish cache (optional, only if varnishadm is available)
+if command -v varnishadm &> /dev/null; then
+    echo "  Clearing Varnish cache..."
+    sudo varnishadm "ban req.url ~ /" 2>/dev/null && echo "  Varnish cleared." || echo "  Varnish ban failed (non-fatal)."
+fi
 
 # Return to original directory
 echo "Returning to source directory..."
@@ -69,3 +88,6 @@ cd "$SOURCE_DIR"
 echo ""
 echo "=== Installation completed successfully! ==="
 echo "Theme installed at: $TARGET_DIR"
+echo ""
+echo "IMPORTANT: Perform a hard refresh in the browser (Ctrl+Shift+R)"
+echo "to ensure the old cached JS/CSS bundles are replaced."
