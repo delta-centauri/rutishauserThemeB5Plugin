@@ -46,6 +46,11 @@ if ($infoObject && $infoObject->parentId != QubitInformationObject::ROOT_ID) {
 // Build shared link attributes for GLightbox integration (used by all usage types below)
 $linkAttrs = [
     'class' => 'glightbox',
+    // Fallback: if GLightbox JS hasn't loaded yet (first visit, slow network),
+    // open in new tab instead of navigating away from the AtoM page.
+    // GLightbox intercepts the click and ignores target when it is ready.
+    'target' => '_blank',
+    'rel' => 'noopener noreferrer',
     'data-gallery' => 'digital-object-gallery',
     'data-description' => $infoObject ? esc_entities($infoObject->getTitle(['cultureFallback' => true])) : '',
     'data-label-open-tab' => esc_entities(__('Open image in separate tab')),
