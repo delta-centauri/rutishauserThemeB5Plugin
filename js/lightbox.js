@@ -1,6 +1,22 @@
 // Import GLightbox
 import GLightbox from 'glightbox';
 
+// Handle sibling navigation button clicks in capture phase.
+// GLightbox registers its own capture-phase listeners on the overlay which would
+// call stopImmediatePropagation() and prevent a regular onclick from ever firing.
+// By using {capture: true} at document level we fire first and navigate cleanly.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.gslide-sibling-prev, .gslide-sibling-next');
+  if (!btn) return;
+  e.stopImmediatePropagation();
+  e.preventDefault();
+  const url = btn.dataset.siblingHref;
+  if (url) {
+    sessionStorage.setItem('openLightbox', 'true');
+    window.location.href = url;
+  }
+}, true);
+
 // Initialize GLightbox for digital object images with sibling navigation
 document.addEventListener('DOMContentLoaded', () => {
   const lightbox = GLightbox({
@@ -106,13 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevBtn = document.createElement('button');
         prevBtn.className = 'gslide-sibling-prev';
         prevBtn.title = prevTitle || '';
+        prevBtn.dataset.siblingHref = prevUrl;
         prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-        prevBtn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          sessionStorage.setItem('openLightbox', 'true');
-          window.location.href = prevUrl;
-        };
         navContainer.appendChild(prevBtn);
       }
 
@@ -120,13 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'gslide-sibling-next';
         nextBtn.title = nextTitle || '';
+        nextBtn.dataset.siblingHref = nextUrl;
         nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-        nextBtn.onclick = (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          sessionStorage.setItem('openLightbox', 'true');
-          window.location.href = nextUrl;
-        };
         navContainer.appendChild(nextBtn);
       }
 
