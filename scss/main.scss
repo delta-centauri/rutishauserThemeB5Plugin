@@ -101,20 +101,21 @@ footer > .container-fluid {
   }
 }
 
-// Sibling Navigation in Lightbox
-.gslide-sibling-nav {
-  position: absolute;
+// Sibling Navigation Overlay (appended to document.body - outside GLightbox DOM)
+// z-index must be higher than GLightbox's overlay (~9999)
+#sibling-nav-overlay {
+  position: fixed;
   top: 50%;
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  z-index: 9999;
+  z-index: 10000;
   pointer-events: none;
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
 
-  button {
+  .sibling-nav-btn {
     pointer-events: auto;
     display: flex;
     align-items: center;
@@ -144,11 +145,11 @@ footer > .container-fluid {
     }
   }
 
-  .gslide-sibling-prev {
+  .sibling-nav-prev {
     margin-right: auto;
   }
 
-  .gslide-sibling-next {
+  .sibling-nav-next {
     margin-left: auto;
   }
 }
