@@ -101,8 +101,8 @@ footer > .container-fluid {
   }
 }
 
-// Sibling Navigation Overlay (appended to document.body - outside GLightbox DOM)
-// GLightbox uses z-index: 999999 — we must be above that.
+// Sibling Navigation Overlay (appended to document.body, outside GLightbox DOM)
+// GLightbox uses z-index: 999999, we must be above that.
 #sibling-nav-overlay {
   position: fixed;
   top: 50%;
